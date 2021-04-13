@@ -2,17 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="login">
 	
-	<!-- <select id="login" parameterType="LoginDTO" resultType="LoginDTO">
-		SELECT *
-		FROM aes_member
+	<select id="login" parameterType="Map" resultType="Map">
+		SELECT member_no, member_nick
+		FROM member
 		WHERE member_id=#{member_id}
-		AND member_pw=HEX(AES_ENCRYPT(#{member_pw},'01234567'))	
+		AND member_pw=#{member_pw}	
 	</select>
 	
-	<select id="jjokjiCount" resultType="Integer" parameterType="Integer">
-		SELECT count(*)
-		FROM jjokji
-		WHERE sumno = #{attribute } AND suchk='N' AND delchk = 'N'
-	</select> -->
+	
 	
 </mapper>

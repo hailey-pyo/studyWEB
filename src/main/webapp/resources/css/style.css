@@ -4,3 +4,34 @@
 	font-family: 'Jua', sans-serif;
 	color: #f94e3f;
 }
+
+#intro{
+	width: 80px;
+	height: 25px;
+	color: #f94e3f;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	font-size: 12pt;
+	font-weight: bolder;
+	border-bottom: 1px solid #f94e3f;
+	text-align: center;
+	float: left;
+}
+
+#writebtn{
+	margin-top: 20px;
+	margin-bottom: 20px;
+	width: 80px;
+	height: 35px;
+	color: #fff;
+	/* background: #404146; */
+	background: #f94e3f;
+	border-radius: 10px;
+	border: none;
+	float: right;
+}
+
+#pagingbtn{
+	width: 360px;
+	margin: 0 auto;
+}

@@ -21,13 +21,19 @@
 <body>
 <div class="container-lg" id="loginPage">
 	<div class="row">
-		<div class="col-md-4"></div>
-		<div class="col-md-4" style="background: lime;">
+		<div class="col-md-3"></div>
+		<div class="col-md-6" style="background: lime;">
 			<div id="logo" style="text-align: center; margin-top: 90px;"><h3>STUDYYA</h3></div><br>
 				<a href="https://kauth.kakao.com/oauth/authorize?client_id=07a4866764e4fbb516a852ed2f5f70f9&redirect_uri=http://localhost:8080/web/login/kakaologin&response_type=code"><img src="./images/kakao_btn3.png"></a>
 			<button>네이버로 로그인</button>
+			<hr>
+			<form action="./login" method="post">
+				<input type="text" placeholder="ID" name="member_id"><br>
+				<input type="password" placeholder="PW" name="member_pw"><br>
+				<button type="submit">로그인</button>
+			</form>
 		</div>
-		<div class="col-md-4"></div>
+		<div class="col-md-3"></div>
 	</div>
 </div>
 

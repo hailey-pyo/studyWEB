@@ -4,5 +4,17 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
+		<bean class="egovframework.rte.ptl.mvc.tags.ui.pagination.DefaultPaginationRenderer" id="textRenderer">
 		
+		</bean>
+		
+		
+		<bean class="egovframework.rte.ptl.mvc.tags.ui.pagination.DefaultPaginationManager" id="paginationManager">
+			<property name="rendererType">
+				<map>
+				<!-- 	<entry key="image" value-ref="imageRenderer"></entry> -->
+					<entry key="text" value-ref="textRenderer"></entry>
+				</map>
+			</property>
+		</bean>
 </beans>
