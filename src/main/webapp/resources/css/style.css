@@ -35,3 +35,12 @@
 	width: 360px;
 	margin: 0 auto;
 }
+
+#boardPic{
+	width: 18px;
+	height: 18px;
+}
+#annotation{
+	font-size: 9pt;
+	color: #404146;
+}

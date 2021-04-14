@@ -58,4 +58,23 @@ public class BoardController {
 		
 		return mv;
 	}
+	
+	@GetMapping(value="/boardDetail")
+	public ModelAndView boardDetail(@RequestParam HashMap<String, Object> map) {
+		ModelAndView mv = new ModelAndView("boardDetail");
+		ArrayList<HashMap<String, Object>> comments = boardService.comments(map);
+		
+		if (map.containsKey("act")) {
+			if (map.get("act").equals("del")) {
+				boardService.delboard(map);	
+				mv.setViewName("redirect:/board?key="+map.get("key"));
+				
+				return mv;
+			}
+		}
+		
+		mv.addObject("detail", boardService.boardDetail(map));
+		mv.addObject("comments", comments);
+		return mv;
+	}
 }

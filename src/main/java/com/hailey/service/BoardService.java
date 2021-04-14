@@ -23,4 +23,16 @@ public class BoardService {
 		return boardDAO.boardListCount(map);
 	}
 
+	public HashMap<String, Object> boardDetail(HashMap<String, Object> map) {
+		return boardDAO.boardDetail(map);
+	}
+
+	public ArrayList<HashMap<String, Object>> comments(HashMap<String, Object> map) {
+		return (ArrayList<HashMap<String, Object>>)boardDAO.comments(map);
+	}
+
+	public void delboard(HashMap<String, Object> map) {
+		boardDAO.delboard(map);
+	}
+
 }

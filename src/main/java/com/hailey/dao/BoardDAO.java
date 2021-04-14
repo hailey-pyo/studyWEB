@@ -20,5 +20,14 @@ public class BoardDAO {
 	public int boardListCount(HashMap<String, Object> map) {
 		return sqlSession.selectOne("board.boardListCount", map);
 	}
+	public HashMap<String, Object> boardDetail(HashMap<String, Object> map) {
+		return sqlSession.selectOne("board.boardDetail", map);
+	}
+	public List<HashMap<String, Object>> comments(HashMap<String, Object> map) {
+		return sqlSession.selectList("board.comments", map);
+	}
+	public void delboard(HashMap<String, Object> map) {
+		sqlSession.update("board.delboard", map);
+	}
 
 }

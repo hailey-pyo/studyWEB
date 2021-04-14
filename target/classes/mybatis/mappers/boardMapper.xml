@@ -12,4 +12,16 @@
 		SELECT count(*) as count from board_view where board_type=#{key} 
 	</select>
 	
+	<select id="boardDetail" parameterType="Map" resultType="Map">
+		SELECT * from board_view Where board_no = #{board_no}
+	</select>
+	
+	<select id="comments" parameterType="Map" resultType="Map">
+		SELECT *
+		FROM comments_view WHERE board_no=#{board_no}
+	</select>
+	
+	<update id="delboard" parameterType="Map">
+		UPDATE board SET board_del_state='Y' WHERE board_no = ${board_no}
+	</update>
 </mapper>
