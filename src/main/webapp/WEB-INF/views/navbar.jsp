@@ -20,7 +20,7 @@
 	<div class="container-lg" id="navbar">
 		<a class="navbar-brand" href="" id="logo">STUDYYA</a>
 		<ul class="nav nav-pills" >
-			<li class="nav-item"><a class="nav-link" href="#" id="navbarlist">스터디모집</a></li>
+			<li class="nav-item"><a class="nav-link" href="./studyMain" id="navbarlist">스터디모집</a></li>
 			<li class="nav-item"><a class="nav-link" href="#" id="navbarlist">채팅</a></li>
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
