@@ -24,7 +24,7 @@ function writeComments(url, member_no, board_no){
         error : function() {        	
            alert("잠시 후 다시시도 해주세요.");
         }
-     });   
+     });   //ddd
 }
 
 function editComments(comments_no, comments_content, board_no){
