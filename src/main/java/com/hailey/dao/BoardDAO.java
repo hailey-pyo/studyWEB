@@ -29,5 +29,11 @@ public class BoardDAO {
 	public void delboard(HashMap<String, Object> map) {
 		sqlSession.update("board.delboard", map);
 	}
+	public void viewCountUp(HashMap<String, Object> map) {
+		sqlSession.update("board.viewCountUp", map);
+	}
+	public void insertComments(HashMap<String, Object> map) {
+		sqlSession.insert("board.insertComments", map);
+	}
 
 }

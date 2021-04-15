@@ -24,6 +24,7 @@ public class BoardService {
 	}
 
 	public HashMap<String, Object> boardDetail(HashMap<String, Object> map) {
+		boardDAO.viewCountUp(map);
 		return boardDAO.boardDetail(map);
 	}
 
@@ -33,6 +34,10 @@ public class BoardService {
 
 	public void delboard(HashMap<String, Object> map) {
 		boardDAO.delboard(map);
+	}
+
+	public void insertComments(HashMap<String, Object> map) {
+		boardDAO.insertComments(map);
 	}
 
 }

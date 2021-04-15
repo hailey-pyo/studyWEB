@@ -6,11 +6,59 @@
 <head>
 <meta charset="UTF-8">
 <title>STUDYYA_boardDetail</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
 function del(board_no){
 	if (confirm("삭제하시겠습니까?")) {
 		location.href='boardDetail?key=${detail.board_type}&board_no='+board_no+'&act=del';
 	}
+}
+
+function writeComments(url, member_no, board_no){
+    var commentsTextarea = document.getElementById('commentsTextarea').value;
+ 	$.ajax({
+        type : "POST",
+        url : url,
+        dataType : "text",
+        data : {
+      	   "comments_content" : commentsTextarea,
+      	   "member_no" : member_no,
+      	   "board_no" : board_no
+         },
+        success : function(data, txtStatus) {
+            $('#commentsdiv').html(data);
+        },
+        error : function() {        	
+           alert("잠시 후 다시시도 해주세요.");
+        }
+     });   
+}
+
+function editComments(comments_no, comments_content){
+   var html = "<textarea id='commentsTextarea' style='height: 40px;'>"+comments_content+"</textarea><button style='height: 40px;' id='commentsWritebtn' onclick='editCommentsA('"+comments_no+"', '"+ comments_content+"')'>수정</button>";
+   $("#commentsdiv"+comments_no).empty();
+   $("#commentsdiv"+comments_no).append(html); 
+}
+
+function editCommentsA(comments_no, comments_content){
+ //    var commentsTextarea = document.getElementById('commentsTextarea').value;
+     alert("1");
+ 	/*$.ajax({
+        type : "POST",
+        url : url,
+        dataType : "text",
+        data : {
+      	   "comments_content" : commentsTextarea,
+      	   "member_no" : member_no,
+      	   "board_no" : board_no
+         },
+        success : function(data, txtStatus) {
+            $('#commentsdiv').html(data);
+        },
+        error : function() {        	
+           alert("잠시 후 다시시도 해주세요.");
+        }
+     });    */
 }
 </script>
 </head>
@@ -28,7 +76,7 @@ function del(board_no){
 										<c:if test="${detail.member_nick eq sessionScope.member_nick }">
 											<button class="btn" onclick="del(${detail.board_no})" style="float: right;">
 						  					<img src="./img/close.png" style="width: 20px; height: 20px; margin-bottom: 3px; padding:0">삭제</button> <!-- 본문수정  본문삭제 -->
-											<button class="btn" onclick="location.href='./freewrite?board_no=${detail.board_no }'" id="delbtn" style="margin-right: 10px; float: right; color:#292F6D;">
+											<button class="btn" onclick="location.href='./boardDetail?key=${detail.board_type }&board_no=${detail.board_no }&act=write'" style="margin-right: 10px; float: right; color:#292F6D;">
 						  					<img src="./img/edit.png" style="width: 20px; height: 20px; margin-bottom: 3px; padding:0;">수정</button>
 										</c:if>
 									</c:if>
@@ -79,61 +127,43 @@ function del(board_no){
 						</tr>
 						<tr>
 							<td>
+							<div id="commentsdiv">
 								<c:forEach items="${comments }" var="c">
-									<div style="width: 100%; background: #dddfe6; height: 30px; padding: 5px; padding-left: 10px; border-radius: 10px;">
-										<form style="float:left;" action="./otherprofile" method="post" name="detail_form${c.comments_no }" id="detail_form${c.comments_no }"> <a href="#" onclick="commentprofilemove( '${c.comments_no }' )">
-										<b>${c.member_nick } 님&ensp;</b>
-										</a><input type="hidden" name="member_no" value="${c.member_no }"></form>
-										<div id="boarddate${c.comments_no }" style="color: #FAFAFA; float: right; margin-right: 5px;">${c.comments_date }</div> 
-											<c:if test="${sessionScope.member_nick  ne null }">
-											<c:choose> 
-											<c:when test="${c.member_nick eq sessionScope.member_nick }">
-											<button class="btn" id="delbtn" onclick="editComments('./editCommentsF', ${c.comments_no })" style="color:#292F6D; font-size: 9pt; margin:0; margin-bottom: 2px;">
-											<img src="./img/edit.png" style="width: 15px; height: 15px; padding:0; margin-bottom: 2px; ">수정</button>	<!-- 댓글수정  댓글삭제 -->
-											<button class="btn" id="delbtn" onclick="delc(${c.comments_no},${detail.board_no })" style="font-size: 9pt; margin:0; margin-bottom: 2px;">
-											<img src="./img/close.png" style="width: 15px; height: 15px; padding:0; margin-bottom: 2px;">삭제</button>
-											</c:when>
-											<c:otherwise>
-											<button class="btn" id="delbtn" onclick="blame2(${c.board_no },${c.comments_no});" style="font-size: 9pt; margin:0; margin-bottom: 2px;">
-											<img src="./img/siren.png" style="width: 15px; height: 15px; padding:0; margin-bottom: 2px; ">댓글신고</button>
-											</c:otherwise>
-											</c:choose>
-											</c:if>
-									 </div>
-									<div id="commentsdiv${c.comments_no }" style="height: 40px; padding: 5px; padding-left: 10px;">${c.comments_content }</div><br>
+										<div style="width: 100%; background: #dddfe6; height: 30px; padding: 5px; padding-left: 10px; border-radius: 10px;">
+											<b>${c.member_nick } 님&ensp;</b>
+											<div style="color: #FAFAFA; float: right; margin-right: 5px;">${c.comments_date }</div> 
+												<!-- 댓글수정  댓글삭제 -->
+												<c:if test="${c.member_nick eq sessionScope.member_nick }">
+													<button class="btn" id="delbtn" onclick="editComments(${c.comments_no}, '${c.comments_content }')" style="color:#292F6D; font-size: 9pt; margin:0; margin-bottom: 2px;">
+													<img src="./img/edit.png" style="width: 15px; height: 15px; padding:0; margin-bottom: 2px; ">수정</button>	
+													<button class="btn" id="delbtn" onclick="delComments()" style="font-size: 9pt; margin:0; margin-bottom: 2px;">
+													<img src="./img/close.png" style="width: 15px; height: 15px; padding:0; margin-bottom: 2px;">삭제</button>
+												</c:if>
+										 </div>
+										<div id="commentsdiv${c.comments_no}" style="height: 40px; padding: 5px; padding-left: 10px;">
+											${c.comments_content }
+										</div><br>
 								</c:forEach>
+								
+								<c:choose>
+									<c:when test="${sessionScope.member_nick ne null}">
+										<textarea id="commentsTextarea"></textarea>
+										<button id="commentsWritebtn" onclick="writeComments('./writeComments','${sessionScope.member_no}', '${detail.board_no}')">댓글<br>쓰기</button>
+									</c:when>
+									<c:otherwise>
+										<textarea disabled id="commentsTextarea" placeholder="로그인이 필요한 서비스입니다."></textarea>
+										<button disabled id="commentsWritebtn">댓글<br>쓰기</button>
+									</c:otherwise>
+								</c:choose>
+							</div>
 							</td>
 						</tr>
-						<tr style="width:100%;">
-							<td>
-								<form action="./freecomment" method="post">
-										<c:choose>
-											<c:when test="${sessionScope.member_nick ne null}">
-											<textarea id="text" name="content"  style="width:90%; height: 100px; margin-right: 0;float: left; border: 1px solid #f94e3f;"></textarea>
-											</c:when>
-											<c:otherwise>
-											<textarea id="text" name="content" disabled
-												placeholder="로그인이 필요한 서비스입니다." style="width:90%; height: 100px; margin-right: 0;float: left; border: 1px solid #f94e3f;"></textarea>
-											</c:otherwise>
-										</c:choose>
-									<c:choose>
-										<c:when test="${sessionScope.mem_nick ne null}">
-											<button style="width: 10%; height: 100px; margin-left:0; float: left; background: #f94e3f; color: white; border: none;"><b>댓글 쓰기</b></button>
-										</c:when>
-										<c:otherwise>
-											<button disabled style="width:10%; height: 100px; margin-left:0; float: left; background: #f94e3f; color: white;border: none;">댓글 쓰기</button>
-										</c:otherwise>
-									</c:choose>		
-								<input type="hidden" name="board_no"
-									value="${detail.board_no }">
-							</form>
-						</td>
-					</tr>
 				</table>
 			</div>
 					
 		<div class="col-md-1"></div>
 	</div>
 </div>
+<br>
 </body>
 </html>

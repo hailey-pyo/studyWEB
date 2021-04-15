@@ -24,4 +24,13 @@
 	<update id="delboard" parameterType="Map">
 		UPDATE board SET board_del_state='Y' WHERE board_no = ${board_no}
 	</update>
+	
+	<update id="viewCountUp" parameterType="Map">
+		UPDATE board SET board_views=board_views +1 WHERE board_no = ${board_no}
+	</update>
+	
+	<insert id="insertComments" parameterType="Map">
+		insert into comments (comments_content, member_no, board_no)
+		values (#{comments_content}, #{member_no}, #{board_no})
+	</insert>
 </mapper>

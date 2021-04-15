@@ -12,7 +12,7 @@ function writeBoard(member_no, board_type){
 	if (member_no == null || member_no == "") {
 		alert("로그인 후 이용가능합니다.");
 	}else {
-		location.href='writeBoard?board_type='+board_type;
+		location.href='board?key='+board_type+'&act=write';
 	}
 }	
 </script>
