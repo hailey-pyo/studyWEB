@@ -40,4 +40,8 @@ public class BoardService {
 		boardDAO.insertComments(map);
 	}
 
+	public void editComments(HashMap<String, Object> map) {
+		boardDAO.editComments(map);
+	}
+
 }

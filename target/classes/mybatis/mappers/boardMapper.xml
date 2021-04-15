@@ -33,4 +33,9 @@
 		insert into comments (comments_content, member_no, board_no)
 		values (#{comments_content}, #{member_no}, #{board_no})
 	</insert>
+	
+	<update id="editComments" parameterType="Map">
+		update comments set comments_content = #{comments_content}
+		where comments_no = #{comments_no}
+	</update>
 </mapper>

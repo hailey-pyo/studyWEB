@@ -34,22 +34,21 @@ function writeComments(url, member_no, board_no){
      });   
 }
 
-function editComments(comments_no, comments_content){
-   var html = "<textarea id='commentsTextarea' style='height: 40px;'>"+comments_content+"</textarea><button style='height: 40px;' id='commentsWritebtn' onclick='editCommentsA('"+comments_no+"', '"+ comments_content+"')'>수정</button>";
-   $("#commentsdiv"+comments_no).empty();
+function editComments(comments_no, comments_content, board_no){
+   var html = "<textarea id='commentsTextarea"+comments_no+"' class='boxC'>"+comments_content+"</textarea><button style='height: 40px;' id='commentsWritebtn' onclick='editCommentsA("+comments_no+","+board_no+")'>수정</button>";
+   $("#commentsdiv"+comments_no).text("");
    $("#commentsdiv"+comments_no).append(html); 
 }
 
-function editCommentsA(comments_no, comments_content){
- //    var commentsTextarea = document.getElementById('commentsTextarea').value;
-     alert("1");
- 	/*$.ajax({
+function editCommentsA(comments_no, board_no){
+    var commentsTextarea = document.getElementById('commentsTextarea'+comments_no).value;
+    $.ajax({
         type : "POST",
-        url : url,
+        url : "./editCommentsA",
         dataType : "text",
         data : {
       	   "comments_content" : commentsTextarea,
-      	   "member_no" : member_no,
+      	   "comments_no" : comments_no,
       	   "board_no" : board_no
          },
         success : function(data, txtStatus) {
@@ -58,9 +57,19 @@ function editCommentsA(comments_no, comments_content){
         error : function() {        	
            alert("잠시 후 다시시도 해주세요.");
         }
-     });    */
+     });    
 }
 </script>
+<style type="text/css">
+.boxC{
+	width:90%; 
+	height:40px; 
+	margin-right:0;
+	float:left; 
+	border:1px solid #f94e3f;
+	resize: none;
+}
+</style>
 </head>
 <body>
 <%@include file="navbar.jsp" %><br>
@@ -134,7 +143,7 @@ function editCommentsA(comments_no, comments_content){
 											<div style="color: #FAFAFA; float: right; margin-right: 5px;">${c.comments_date }</div> 
 												<!-- 댓글수정  댓글삭제 -->
 												<c:if test="${c.member_nick eq sessionScope.member_nick }">
-													<button class="btn" id="delbtn" onclick="editComments(${c.comments_no}, '${c.comments_content }')" style="color:#292F6D; font-size: 9pt; margin:0; margin-bottom: 2px;">
+													<button class="btn" id="delbtn" onclick="editComments('${c.comments_no}', '${c.comments_content }', '${c.board_no }')" style="color:#292F6D; font-size: 9pt; margin:0; margin-bottom: 2px;">
 													<img src="./img/edit.png" style="width: 15px; height: 15px; padding:0; margin-bottom: 2px; ">수정</button>	
 													<button class="btn" id="delbtn" onclick="delComments()" style="font-size: 9pt; margin:0; margin-bottom: 2px;">
 													<img src="./img/close.png" style="width: 15px; height: 15px; padding:0; margin-bottom: 2px;">삭제</button>

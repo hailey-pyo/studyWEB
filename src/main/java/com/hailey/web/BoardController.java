@@ -97,10 +97,16 @@ public class BoardController {
 	public ModelAndView writeComments(@RequestParam HashMap<String, Object> map) {
 		ModelAndView mv = new ModelAndView("writeComments");
 		boardService.insertComments(map);
-		System.out.println(map.get("comments_content"));
+		mv.addObject("comments", boardService.comments(map));
+		return mv;
+	}
+	@PostMapping(value="/editCommentsA")
+	public ModelAndView editCommentsA(@RequestParam HashMap<String, Object> map) {
+		ModelAndView mv = new ModelAndView("writeComments");
+		boardService.editComments(map);
 		mv.addObject("comments", boardService.comments(map));
 		return mv;
 	}
 	
-
+	
 }
