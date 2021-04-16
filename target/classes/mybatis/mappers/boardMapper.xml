@@ -30,12 +30,27 @@
 	</update>
 	
 	<insert id="insertComments" parameterType="Map">
-		insert into comments (comments_content, member_no, board_no)
-		values (#{comments_content}, #{member_no}, #{board_no})
+		insert into comments (comments_content, member_no, board_no
+		<if test="comments_no != null">, comments_comments_no</if>)
+		values (#{comments_content}, #{member_no}, #{board_no}
+		<if test="comments_no != null">, #{comments_no}</if>)
 	</insert>
 	
 	<update id="editComments" parameterType="Map">
 		update comments set comments_content = #{comments_content}
 		where comments_no = #{comments_no}
 	</update>
+	
+	<update id="delComments" parameterType="Map">
+		UPDATE comments SET comments_del_state='Y' WHERE comments_no = ${comments_no}
+	</update>
+	
+	<update id="editBoard" parameterType="Map">
+		UPDATE board SET board_title=#{board_title}, board_content=#{board_content}
+		WHERE board_no = ${board_no}
+	</update>
+	<insert id="writeBoard" parameterType="Map">
+		insert into board (board_type_no, board_title, board_content, member_no)
+		values(#{board_type_no}, #{board_title}, #{board_content}, #{member_no})
+	</insert>
 </mapper>

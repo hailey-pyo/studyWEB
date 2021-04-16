@@ -44,4 +44,16 @@ public class BoardService {
 		boardDAO.editComments(map);
 	}
 
+	public void delComments(HashMap<String, Object> map) {
+		boardDAO.delComments(map);
+	}
+
+	public void writeA(HashMap<String, Object> map) {
+		boardDAO.writeA(map);
+	}
+
+	public void editA(HashMap<String, Object> map) {
+		boardDAO.editA(map);
+	}
+
 }

@@ -38,5 +38,14 @@ public class BoardDAO {
 	public void editComments(HashMap<String, Object> map) {
 		sqlSession.update("board.editComments", map);		
 	}
+	public void delComments(HashMap<String, Object> map) {
+		sqlSession.update("board.delComments", map);
+	}
+	public void writeA(HashMap<String, Object> map) {
+		sqlSession.insert("board.writeBoard", map);
+	}
+	public void editA(HashMap<String, Object> map) {
+		sqlSession.update("board.editBoard", map);
+	}
 
 }

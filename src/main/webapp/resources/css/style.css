@@ -78,4 +78,10 @@
 	border:1px solid #f94e3f;
 	resize: none;
 }
-
+.cocobtn{
+	height: 20px; 
+	background: #5e5e5f; 
+	color: white; 
+	border: none;
+	font-size: 10pt;
+}
