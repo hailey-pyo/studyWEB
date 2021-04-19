@@ -16,11 +16,12 @@
 	<div class="row">
 		<div class="col-md-1"></div>
 		<div class="col-md-10">
-				<form action="./writeA" method="post">
+				<form action="./writeA" method="post" enctype="multipart/form-data">
 					<c:choose>
 						<c:when test="${map.board_no ne 0 }">
 							<input type="text" id="titleInput" name="board_title" value="${map.board_title }"><br>					
 							<textarea name="board_content" class="summernote">${map.board_content }</textarea>
+							<input type="file" name="file" id="file">
 							<input type="hidden" value="${map.board_no }" name="board_no">
 							<button type="reset" onclick="location.href='./boardDetail?board_no=${map.board_no }'" id="cancelbtn">취소</button>
 						</c:when>
@@ -28,6 +29,7 @@
 						<c:otherwise>						
 							<input type="text" id="titleInput" name="board_title" placeholder="제목을 입력하세요"><br>
 							<textarea name="board_content" class="summernote"></textarea>
+							<input type="file" name="file" id="file">							
 							<input type="hidden" value="${map.key }" name="key">
 							<button type="reset" onclick="location.href='./board?key=${map.key}'" id="cancelbtn">취소</button>
 						</c:otherwise>

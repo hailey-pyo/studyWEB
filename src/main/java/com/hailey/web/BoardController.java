@@ -3,6 +3,7 @@ package com.hailey.web;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -11,15 +12,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.hailey.service.BoardService;
+import com.hailey.util.FileSave;
 
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 @Controller
 public class BoardController {
+	
+	@Autowired
+	private FileSave fileSave;
+	
+	@Autowired
+	private ServletContext servletContext;
 	
 	@Autowired
 	private BoardService boardService;
@@ -118,9 +126,11 @@ public class BoardController {
 	}
 	
 	@PostMapping(value="/writeA")
-	public String writeA(@RequestParam HashMap<String, Object> map, HttpServletRequest request) {
+	public String writeA(@RequestParam HashMap<String, Object> map, HttpServletRequest request, MultipartFile file) {
 		if (map.containsKey("board_no")) {
 			boardService.editA(map);			
+			
+			
 			return "redirect:/boardDetail?board_no="+map.get("board_no");
 		}else {
 			HttpSession session = request.getSession();
@@ -131,6 +141,15 @@ public class BoardController {
 			}else if (map.get("key").equals("qna")) {
 				map.put("board_type_no", 2);				
 			}
+			
+			String realPath = servletContext.getRealPath("resources/");
+			map.put("realPath", realPath);
+			
+			if (file.getOriginalFilename() != null && file.getSize() > 0) {
+				//파일 업로드 
+				fileSave.save(realPath + "upload", file);
+			}
+			
 			boardService.writeA(map);				
 			return "redirect:/board?key="+map.get("key");
 		}	
