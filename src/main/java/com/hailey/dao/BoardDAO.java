@@ -47,5 +47,17 @@ public class BoardDAO {
 	public void editA(HashMap<String, Object> map) {
 		sqlSession.update("board.editBoard", map);
 	}
+	public void blame(HashMap<String, Object> map) {
+		sqlSession.insert("board.blame", map);
+	}
+	public int goodcheck(HashMap<String, Object> map) {
+		return sqlSession.selectOne("board.goodcheck", map);
+	}
+	public void goodinsert(HashMap<String, Object> map) {
+		sqlSession.insert("board.goodinsert", map);
+	}
+	public void gooddelete(HashMap<String, Object> map) {
+		sqlSession.delete("board.gooddelete", map);		
+	}
 
 }

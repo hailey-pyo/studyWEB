@@ -66,9 +66,9 @@ function delComments(comments_no, board_no){
 	}
 }
 function cocoments(comments_no, board_no){
-	var html = "<textarea id='cocommentsTextarea"+comments_no+"' class='boxC'></textarea><button style='height: 40px;' id='commentsWritebtn' onclick='cocommentsA("+comments_no+","+board_no+")'>답글</button>";
-	$("#cocobtn"+comments_no).remove();
-	$("#cocommentsdiv"+comments_no).append(html); 
+		var html = "<textarea id='cocommentsTextarea"+comments_no+"' class='boxC'></textarea><button style='height: 40px;' id='commentsWritebtn' onclick='cocommentsA("+comments_no+","+board_no+")'>답글</button>";
+		$("#cocobtn"+comments_no).remove();
+		$("#cocommentsdiv"+comments_no).append(html); 
 }
 
 function cocommentsA(comments_no, board_no){
@@ -101,6 +101,37 @@ function cocommentsA(comments_no, board_no){
 	resize: none;
 }
 </style>
+<!-- 신고하기, 좋아요 -->
+<script type="text/javascript">
+function blame(){
+	if (confirm("신고하시겠습니까?")) {
+		alert("신고완료 되었습니다.");
+		location.href="./blame?board_no=${detail.board_no}";
+	}
+}
+function good(member_no, board_no, board_type){
+	   $.ajax({
+		      url : "./good",
+		      type : "POST",
+		      dataType : "json",
+		      data : {"member_no" : member_no, 
+		    	  "board_no" : board_no, 
+		    	  "board_type" : board_type }, 
+		      success : function(data, txtStatus) {
+		 			if(data.goodcheck == 1) {
+			            $("#goodimg").attr("src", "./images/good_full.png");
+		 			} else {
+			            $("#goodimg").attr("src", "./images/good_empty.png");
+		 			}
+		 			
+		            $("#goodCount").text(data.goodcount);
+		      },             
+		      error:function(request,status,error){
+		         alert("잠시 후 다시시도해주세요");
+		      }
+		   });
+}
+</script>
 </head>
 <body>
 <%@include file="navbar.jsp" %><br>
@@ -124,13 +155,8 @@ function cocommentsA(comments_no, board_no){
 						</tr>
 						<tr> 
 							<td style="vertical-align: bottom; text-align: left;">
-							<form action="./otherprofile" method="post" name="detail_form" id="detail_form">
-							<img id="memPic" src="./memimg/${detail.member_pic }">&ensp;  
-							<a href="#" onclick="profilemove()">
-							${detail.member_nick }
-							</a>&ensp;&ensp;&ensp;
+							${detail.member_nick }&ensp;&ensp;&ensp;
 							<span style="color: #a3a1a1;">${detail.board_date }</span>
-							<input type="hidden" name="mem_no" value="${detail.mem_no }"></form>  
 							</td>
 							<td style="text-align: right;">
 							<img src="./img/views.png" style="width: 20px; height: 20px;">${detail.board_views }
@@ -144,23 +170,36 @@ function cocommentsA(comments_no, board_no){
 							</tr>
 							
 							<tr style="height: 100px; vertical-align: middle;">
-								<td><c:if test="${sessionScope.mem_nick ne null }">
-											<button class="btn" onclick="blame(${detail.board_no});" style="background: #6AAFE6; color: white; padding-left:10px; padding-right: 10px;"><img src="./img/siren.png" style="width: 20px; height: 20px;">신고</button>
-											<button class="btn" onclick="good()" style="display: inline; background: #6AAFE6; color: white; padding-left:10px; padding-right: 10px;"> <!-- 좋아요 -->
-											<div style="display: inline; margin:0;  background: blue;">	
-												<c:if test="${goodresult eq 0 }">
-												<img id="goodimg" src="./img/good_empty.png" style="width: 20px; float: left; height: 20px;">													
+								<td><div style="margin: 0 auto; width: 150px;">
+										<c:if test="${sessionScope.member_nick ne null }">
+											<button class="btn" onclick="blame()" id="blamebtn"><img src="./images/siren.png">신고</button>
+											<button class="btn" onclick="good('${sessionScope.member_no}','${detail.board_no }','${detail.board_type }')" id="goodbtn"> <!-- 좋아요 -->
+												<c:if test="${goodcheck eq 0 }">
+													<img id="goodimg" src="./images/good_empty.png">													
 												</c:if>
-												<c:if test="${goodresult eq 1 }">
-												<img id="goodimg" src="./img/good_full.png" style="width: 20px; float: left; height: 20px;">													
+												<c:if test="${goodcheck eq 1 }">
+													<img id="goodimg" src="./images/good_full.png">													
 												</c:if>
-												 <div id="goodCount" style="float: left; margin-left: 2px; font-size: 12pt;">${detail.board_good}</div></div></button>
-									</c:if>
+												 <div id="goodCount">${detail.board_likes}</div>
+											</button>
+										</c:if>
+									</div>
 								</td>
 							</tr>
 						</table>
+					<hr style="height:1px;border:none;background-color:#a3a1a1;margin: 0;"> 
+					<c:if test="${detail.board_file ne null}">
+						<table style="border:1px solid #B2ADA0; margin:0; width:100%; height: 40px;">
+							<tr><td style="padding-left: 10px;">
+									<form action="file/download" method="POST">
+										첨부파일: ${detail.board_file_origin } <button type="submit" id="downbtn">다운로드</button>
+										<input type="hidden" name="fileName" value="${detail.board_file }">
+										<input type="hidden" name="fileNameOrigin" value="${detail.board_file_origin }">
+									</form>
+							</td></tr>
+						</table>
+					</c:if>
 					<hr style="height:1px;border:none;background-color:#a3a1a1;margin: 0; margin-bottom: 10px"> 
-					
 					<table style="margin:0; width:100%; text-align: left;">
 						<tr>
 							<td style="font-size: 15px; color:#6AAFE6;"><img src="./img/comments.png" style="width: 30px; height: 25px;"><b>댓글</b></td>
@@ -172,7 +211,10 @@ function cocommentsA(comments_no, board_no){
 										<c:if test="${c.comments_comments_no eq 0 }">
 										<div style="width: 100%; background: #dddfe6; height: 30px; padding: 5px; padding-left: 10px; border-radius: 10px;">
 											<b>${c.member_nick } 님&ensp;</b>
-											<div style="color: #FAFAFA; float: right; margin-right: 5px;">${c.comments_date } <button id="cocobtn${c.comments_no }" class="cocobtn" onclick="cocoments(${c.comments_no}, ${c.board_no})">답글</button></div> 
+												<c:if test="${sessionScope.member_nick ne null}">
+													<button id="cocobtn${c.comments_no }" class="cocobtn" onclick="cocoments(${c.comments_no}, ${c.board_no})">답글</button>
+												</c:if>
+												<div style="color: #FAFAFA; float: right; margin-right: 5px;">${c.comments_date } </div>
 												<!-- 댓글수정  댓글삭제 -->
 												<c:if test="${c.member_nick eq sessionScope.member_nick }">
 													<button class="btn" onclick="editComments('${c.comments_no}', '${c.comments_content }', '${c.board_no }')" style="color:#292F6D; font-size: 9pt; margin:0; margin-bottom: 2px;">

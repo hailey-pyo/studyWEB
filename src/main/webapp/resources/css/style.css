@@ -60,6 +60,10 @@
 	margin: 0;
 	height: 40px;
 }
+#attachfile{
+	width:100%; border: 1px solid darkgray;
+	height: 40px; padding: 5px;
+}
 #commentsWritebtn{
 	width: 10%; 
 	height: 100px; 
@@ -69,6 +73,18 @@
 	color: white; 
 	border: none;
 	font-weight: bold;
+}
+#downbtn{
+	background: #f94e3f; 
+	color: white; 
+	border: none;
+}
+#goodbtn, #blamebtn{
+	background: #fff; 
+	color: #f94e3f; 
+	border: 1px solid #f94e3f; 
+	padding-left:10px; 
+	padding-right: 10px;
 }
 #commentsTextarea{
 	width:90%; 
@@ -84,4 +100,11 @@
 	color: white; 
 	border: none;
 	font-size: 10pt;
+	float: right;
+}
+#goodimg{
+	width: 20px; float: left; height: 20px;
+}
+#goodCount{
+	float: left; margin-left: 2px; font-size: 12pt;
 }

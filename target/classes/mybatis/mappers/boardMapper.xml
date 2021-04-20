@@ -22,11 +22,11 @@
 	</select>
 	
 	<update id="delboard" parameterType="Map">
-		UPDATE board SET board_del_state='Y' WHERE board_no = ${board_no}
+		UPDATE board SET board_del_state='Y' WHERE board_no = #{board_no}
 	</update>
 	
 	<update id="viewCountUp" parameterType="Map">
-		UPDATE board SET board_views=board_views +1 WHERE board_no = ${board_no}
+		UPDATE board SET board_views=board_views +1 WHERE board_no = #{board_no}
 	</update>
 	
 	<insert id="insertComments" parameterType="Map">
@@ -42,7 +42,7 @@
 	</update>
 	
 	<update id="delComments" parameterType="Map">
-		UPDATE comments SET comments_del_state='Y' WHERE comments_no = ${comments_no}
+		UPDATE comments SET comments_del_state='Y' WHERE comments_no = #{comments_no}
 	</update>
 	
 	<update id="editBoard" parameterType="Map">
@@ -50,7 +50,23 @@
 		WHERE board_no = ${board_no}
 	</update>
 	<insert id="writeBoard" parameterType="Map">
-		insert into board (board_type_no, board_title, board_content, member_no)
-		values(#{board_type_no}, #{board_title}, #{board_content}, #{member_no})
+		insert into board (board_type_no, board_title, board_content, member_no
+		<if test="board_file != null">, board_file, board_file_origin</if>)
+		values(#{board_type_no}, #{board_title}, #{board_content}, #{member_no}
+		<if test="board_file != null">, #{board_file}, #{board_file_origin}</if>)
 	</insert>
+	
+	<insert id="blame" parameterType="Map">
+		insert board_blame (board_no, member_no) values(#{board_no}, #{member_no}) 
+	</insert>
+	
+	<select id="goodcheck" parameterType="Map" resultType="Integer">
+		select count(*) as count from board_like where board_no=#{board_no} AND member_no=#{member_no}
+	</select>
+	<insert id="goodinsert" parameterType="Map">
+		insert into board_like (board_no, member_no) values(#{board_no}, #{member_no}) 
+	</insert>
+	<delete id="gooddelete" parameterType="Map">
+		delete from board_like where board_no=#{board_no} AND member_no=#{member_no}
+	</delete>
 </mapper>

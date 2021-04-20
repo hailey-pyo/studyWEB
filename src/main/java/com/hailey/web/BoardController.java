@@ -1,12 +1,16 @@
 package com.hailey.web;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -81,11 +85,11 @@ public class BoardController {
 	}
 	
 	@GetMapping(value="/boardDetail")
-	public ModelAndView boardDetail(@RequestParam HashMap<String, Object> map) {
+	public ModelAndView boardDetail(@RequestParam HashMap<String, Object> map, HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("boardDetail");
 		ArrayList<HashMap<String, Object>> comments = boardService.comments(map);
 		HashMap<String, Object> detail = boardService.boardDetail(map);
-		
+
 		if (map.containsKey("act")) {
 			if (map.get("act").equals("del")) {
 				boardService.delboard(map);	
@@ -99,6 +103,12 @@ public class BoardController {
 		} else {
 			mv.addObject("detail", detail);
 			mv.addObject("comments", comments);
+			HttpSession session = request.getSession();
+			if (session.getAttribute("member_no") != null) {
+				map.put("member_no", session.getAttribute("member_no"));
+				int goodcheck = boardService.goodcheck(map);
+				mv.addObject("goodcheck", goodcheck);				
+			}
 		}
 		
 		return mv;			
@@ -142,13 +152,15 @@ public class BoardController {
 				map.put("board_type_no", 2);				
 			}
 			
+			//파일올리기
 			String realPath = servletContext.getRealPath("resources/");
 			map.put("realPath", realPath);
-			
 			if (file.getOriginalFilename() != null && file.getSize() > 0) {
-				//파일 업로드 
-				fileSave.save(realPath + "upload", file);
+				String realFileName = fileSave.save(realPath + "upload", file);
+				map.put("board_file", realFileName);
+				map.put("board_file_origin", file.getOriginalFilename());
 			}
+			
 			
 			boardService.writeA(map);				
 			return "redirect:/board?key="+map.get("key");
@@ -165,4 +177,33 @@ public class BoardController {
 		mv.addObject("comments", boardService.comments(map));
 		return mv;
 	}
+	
+	@GetMapping(value="/blame")
+	public String blame(@RequestParam HashMap<String, Object> map, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		map.put("member_no", session.getAttribute("member_no"));
+		boardService.blame(map);
+		return "redirect:/boardDetail?board_no="+map.get("board_no");
+	}
+	
+	@PostMapping(value="/good")
+	public void good(@RequestParam HashMap<String, Object> map, HttpServletResponse response) throws IOException {
+		int goodcheck = boardService.goodcheck(map);
+	
+		if(goodcheck == 0) {
+			boardService.goodinsert(map);
+			goodcheck = 1;
+		} else {
+			boardService.gooddelete(map);
+			goodcheck = 0;
+		}
+
+			JSONObject good = new JSONObject();
+			good.put("goodcheck", goodcheck);
+			good.put("goodcount", boardService.boardDetail(map).get("board_likes"));
+			String jsonInfo = good.toJSONString();
+			PrintWriter out = response.getWriter();
+			out.print(jsonInfo);
+	}
+	
 }

@@ -21,15 +21,15 @@
 						<c:when test="${map.board_no ne 0 }">
 							<input type="text" id="titleInput" name="board_title" value="${map.board_title }"><br>					
 							<textarea name="board_content" class="summernote">${map.board_content }</textarea>
-							<input type="file" name="file" id="file">
+							<div id="attachfile">첨부 파일을 선택하세요 <input type="file" name="file" id="file"></div>							
 							<input type="hidden" value="${map.board_no }" name="board_no">
 							<button type="reset" onclick="location.href='./boardDetail?board_no=${map.board_no }'" id="cancelbtn">취소</button>
 						</c:when>
 					
 						<c:otherwise>						
 							<input type="text" id="titleInput" name="board_title" placeholder="제목을 입력하세요"><br>
+							<div id="attachfile">첨부 파일을 선택하세요 <input type="file" name="file" id="file"></div>							
 							<textarea name="board_content" class="summernote"></textarea>
-							<input type="file" name="file" id="file">							
 							<input type="hidden" value="${map.key }" name="key">
 							<button type="reset" onclick="location.href='./board?key=${map.key}'" id="cancelbtn">취소</button>
 						</c:otherwise>
@@ -71,15 +71,6 @@
 	    focus : true,
 	    lang : 'ko-KR',
 	    toolbar : toolbar,
-	    callbacks : { //여기 부분이 이미지를 첨부하는 부분
-	    onImageUpload : function(files, editor,
-	    welEditable) {
-	    for (var i = files.length - 1; i >= 0; i--) {
-	    uploadSummernoteImageFile(files[i],
-	    this);
-	    		}
-	    	}
-	    }
 	 };
  
 	$(document).ready(function() {

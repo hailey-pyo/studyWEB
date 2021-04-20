@@ -56,4 +56,20 @@ public class BoardService {
 		boardDAO.editA(map);
 	}
 
+	public void blame(HashMap<String, Object> map) {
+		boardDAO.blame(map);
+	}
+
+	public int goodcheck(HashMap<String, Object> map) {
+		return boardDAO.goodcheck(map);
+	}
+
+	public void goodinsert(HashMap<String, Object> map) {
+		boardDAO.goodinsert(map);
+	}
+
+	public void gooddelete(HashMap<String, Object> map) {
+		boardDAO.gooddelete(map);
+	}
+
 }
