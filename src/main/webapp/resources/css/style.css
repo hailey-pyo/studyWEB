@@ -30,8 +30,81 @@
 	border: none;
 	float: right;
 }
-
+#cancelbtn{
+	margin-top: 20px;
+	margin-bottom: 20px;
+	width: 80px;
+	height: 35px;
+	color: #fff;
+	background: #404146;
+	border-radius: 10px;
+	border: none;
+	float: right;
+}
 #pagingbtn{
 	width: 360px;
 	margin: 0 auto;
+}
+
+#boardPic{
+	width: 18px;
+	height: 18px;
+}
+#annotation{
+	font-size: 9pt;
+	color: #404146;
+}
+
+#titleInput{
+	width: 100%;
+	margin: 0;
+	height: 40px;
+}
+#attachfile{
+	width:100%; border: 1px solid darkgray;
+	height: 40px; padding: 5px;
+}
+#commentsWritebtn{
+	width: 10%; 
+	height: 100px; 
+	margin-left:0; 
+	float: left; 
+	background: #f94e3f; 
+	color: white; 
+	border: none;
+	font-weight: bold;
+}
+#downbtn{
+	background: #f94e3f; 
+	color: white; 
+	border: none;
+}
+#goodbtn, #blamebtn{
+	background: #fff; 
+	color: #f94e3f; 
+	border: 1px solid #f94e3f; 
+	padding-left:10px; 
+	padding-right: 10px;
+}
+#commentsTextarea{
+	width:90%; 
+	height:100px; 
+	margin-right:0;
+	float:left; 
+	border:1px solid #f94e3f;
+	resize: none;
+}
+.cocobtn{
+	height: 20px; 
+	background: #5e5e5f; 
+	color: white; 
+	border: none;
+	font-size: 10pt;
+	float: right;
+}
+#goodimg{
+	width: 20px; float: left; height: 20px;
+}
+#goodCount{
+	float: left; margin-left: 2px; font-size: 12pt;
 }

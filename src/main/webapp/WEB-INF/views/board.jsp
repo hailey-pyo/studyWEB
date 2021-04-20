@@ -12,7 +12,7 @@ function writeBoard(member_no, board_type){
 	if (member_no == null || member_no == "") {
 		alert("로그인 후 이용가능합니다.");
 	}else {
-		location.href='writeBoard?board_type='+board_type;
+		location.href='board?key='+board_type+'&act=write';
 	}
 }	
 </script>
@@ -40,24 +40,23 @@ function writeBoard(member_no, board_type){
 	<table class="table table-hover table-sm">
 		<thead>
 			<tr>
-				<th  style="width: 12.5% ; text-align: center;">좋아요</th>
-				<th  style="width: 40%; text-align: center;">제목</th>
-				<th style="width: 15%; text-align: center;">닉네임</th>
-				<th style="width: 12.5%;text-align: center;">조회수</th>
-				<th style="width: 20%; text-align: center;">날짜</th>
+				<th style="width: 60%; text-align: center;">제목</th>
+				<th style="width: 20%; text-align: center;">작성자</th>
+				<th style="width: 20%; text-align: center;">작성일</th>
 			</tr>
 		</thead>
 		<tbody style="text-align: center;">
 			<c:forEach items="${boardList }" var="row">
 			<tr>
-				<td>${row.board_likes }</td>
 				<td style="text-align: left;">
-					<a href="./detail?no=${row.board_no }" style="text-decoration: none;color: black;">
-						${row.board_title } <span>(${row.comments })</span>
+					<a href="./boardDetail?board_no=${row.board_no }" style="text-decoration: none;color: black;">
+						${row.board_title } 
+						<span id="annotation"><img src="./images/comments.png" id="boardPic">${row.comments }
+							<img src="./images/like_bk.png" id="boardPic">${row.board_likes } <img src="./images/view.png" id="boardPic">${row.board_views }
+						</span>
 					</a>
 				</td>
 				<td>${row.member_nick }</td>
-				<td>${row.board_views }</td>
 				<td>${row.board_date }</td>
 			</tr>
 			</c:forEach>
