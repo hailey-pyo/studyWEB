@@ -55,7 +55,7 @@ function writeBoard(member_no, board_type){
 							<img src="./images/like_bk.png" id="boardPic">${row.board_likes } <img src="./images/view.png" id="boardPic">${row.board_views }
 						</span>
 					</a>
-				</td>ㄱ끝났어여
+				</td>
 				<td>${row.member_nick }</td>
 				<td>${row.board_date }</td>
 			</tr>
