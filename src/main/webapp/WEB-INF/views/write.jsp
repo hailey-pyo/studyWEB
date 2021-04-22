@@ -19,14 +19,27 @@
 				<form action="./writeA" method="post" enctype="multipart/form-data">
 					<c:choose>
 						<c:when test="${map.board_no ne 0 }">
+							<c:if test="${map.key eq 'qna'}">
+								<div style="color:#f94e3f;float: right;">비밀글 
+								<c:if test="${map.secret eq 'Y'}">
+									<input type="checkbox" checked="checked" name="secret">
+								</c:if>
+								<c:if test="${map.secret eq 'N'}">
+									<input type="checkbox" name="secret">
+								</c:if>
+								</div>
+							</c:if>
 							<input type="text" id="titleInput" name="board_title" value="${map.board_title }"><br>					
-							<textarea name="board_content" class="summernote">${map.board_content }</textarea>
 							<div id="attachfile">첨부 파일을 선택하세요 <input type="file" name="file" id="file"></div>							
+							<textarea name="board_content" class="summernote">${map.board_content }</textarea>
 							<input type="hidden" value="${map.board_no }" name="board_no">
 							<button type="reset" onclick="location.href='./boardDetail?board_no=${map.board_no }'" id="cancelbtn">취소</button>
 						</c:when>
 					
-						<c:otherwise>						
+						<c:otherwise>		
+							<c:if test="${map.key eq 'qna'}">
+								<div style="color:#f94e3f;float: right;">비밀글 <input type="checkbox" name="secret"></div>
+							</c:if>				
 							<input type="text" id="titleInput" name="board_title" placeholder="제목을 입력하세요"><br>
 							<div id="attachfile">첨부 파일을 선택하세요 <input type="file" name="file" id="file"></div>							
 							<textarea name="board_content" class="summernote"></textarea>

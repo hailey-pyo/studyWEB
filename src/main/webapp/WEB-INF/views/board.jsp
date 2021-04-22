@@ -49,12 +49,30 @@ function writeBoard(member_no, board_type){
 			<c:forEach items="${boardList }" var="row">
 			<tr>
 				<td style="text-align: left;">
-					<a href="./boardDetail?board_no=${row.board_no }" style="text-decoration: none;color: black;">
-						${row.board_title } 
-						<span id="annotation"><img src="./images/comments.png" id="boardPic">${row.comments }
-							<img src="./images/like_bk.png" id="boardPic">${row.board_likes } <img src="./images/view.png" id="boardPic">${row.board_views }
-						</span>
-					</a>
+					<c:if test="${row.secret eq 'Y'}">
+					<c:choose>
+						<c:when test="${row.member_no eq sessionScope.member_no}">
+							<a href="./boardDetail?board_no=${row.board_no}" style="text-decoration: none;color: black;">
+								비밀 글입니다.
+								<span id="annotation"><img src="./images/comments.png" id="boardPic">${row.comments }</span>
+							</a>
+						</c:when>
+						<c:otherwise>
+							<span style="text-decoration: none;color: black;">
+								비밀 글입니다.
+								<span id="annotation"><img src="./images/comments.png" id="boardPic">${row.comments }</span>
+							</span>
+						</c:otherwise>
+					</c:choose>
+					</c:if>
+					<c:if test="${row.secret eq 'N'}">
+						<a href="./boardDetail?board_no=${row.board_no }" style="text-decoration: none;color: black;">
+							${row.board_title } 
+							<span id="annotation"><img src="./images/comments.png" id="boardPic">${row.comments }
+								<img src="./images/like_bk.png" id="boardPic">${row.board_likes } <img src="./images/view.png" id="boardPic">${row.board_views }
+							</span>
+						</a>
+					</c:if>
 				</td>
 				<td>${row.member_nick }</td>
 				<td>${row.board_date }</td>
@@ -68,6 +86,5 @@ function writeBoard(member_no, board_type){
 			jsFunction="linkPage"/>
 	</div>
 </div>
-
 </body>
 </html>

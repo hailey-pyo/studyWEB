@@ -35,7 +35,7 @@ function writeComments(url, member_no, board_no){
 }
 
 function editComments(comments_no, comments_content, board_no){
-   var html = "<textarea id='commentsTextarea"+comments_no+"' class='boxC'>"+comments_content+"</textarea><button style='height: 40px;' id='commentsWritebtn' onclick='editCommentsA("+comments_no+","+board_no+")'>수정</button>";
+   var html = "<textarea id='commentsTextarea"+comments_no+"' class='boxC'>"+comments_content+"</textarea><button style='height: 60px;' id='commentsWritebtn' onclick='editCommentsA("+comments_no+","+board_no+")'>수정</button>";
    $("#commentsdiv"+comments_no).text("");
    $("#commentsdiv"+comments_no).append(html); 
 }
@@ -66,7 +66,7 @@ function delComments(comments_no, board_no){
 	}
 }
 function cocoments(comments_no, board_no){
-		var html = "<textarea id='cocommentsTextarea"+comments_no+"' class='boxC'></textarea><button style='height: 40px;' id='commentsWritebtn' onclick='cocommentsA("+comments_no+","+board_no+")'>답글</button>";
+		var html = "<textarea id='cocommentsTextarea"+comments_no+"' class='boxC'></textarea><button style='height: 60px;' id='commentsWritebtn' onclick='cocommentsA("+comments_no+","+board_no+")'>답글</button>";
 		$("#cocobtn"+comments_no).remove();
 		$("#cocommentsdiv"+comments_no).append(html); 
 }
@@ -94,7 +94,7 @@ function cocommentsA(comments_no, board_no){
 <style type="text/css">
 .boxC{
 	width:90%; 
-	height:40px; 
+	height:60px; 
 	margin-right:0;
 	float:left; 
 	border:1px solid #f94e3f;
@@ -147,7 +147,7 @@ function good(member_no, board_no, board_type){
 										<c:if test="${detail.member_nick eq sessionScope.member_nick }">
 											<button class="btn" onclick="del(${detail.board_no})" style="float: right;">
 						  					<img src="./img/close.png" style="width: 20px; height: 20px; margin-bottom: 3px; padding:0">삭제</button> <!-- 본문수정  본문삭제 -->
-											<button class="btn" onclick="location.href='./boardDetail?key=${detail.board_type }&board_no=${detail.board_no }&act=write'" style="margin-right: 10px; float: right; color:#292F6D;">
+											<button class="btn" onclick="location.href='./boardDetail?key=${detail.board_type }&board_no=${detail.board_no }&act=write&secret=${detail.secret }'" style="margin-right: 10px; float: right; color:#292F6D;">
 						  					<img src="./img/edit.png" style="width: 20px; height: 20px; margin-bottom: 3px; padding:0;">수정</button>
 										</c:if>
 									</c:if>
@@ -209,6 +209,7 @@ function good(member_no, board_no, board_type){
 							<div id="commentsdiv">
 								<c:forEach items="${comments }" var="c">
 										<c:if test="${c.comments_comments_no eq 0 }">
+										
 										<div style="width: 100%; background: #dddfe6; height: 30px; padding: 5px; padding-left: 10px; border-radius: 10px;">
 											<b>${c.member_nick } 님&ensp;</b>
 												<c:if test="${sessionScope.member_nick ne null}">
@@ -222,17 +223,18 @@ function good(member_no, board_no, board_type){
 													<button class="btn" onclick="delComments(${c.comments_no},${c.board_no})" style="font-size: 9pt; margin:0; margin-bottom: 2px;">
 													<img src="./img/close.png" style="width: 15px; height: 15px; padding:0; margin-bottom: 2px;">삭제</button>
 												</c:if>
-										 </div>
-										<div id="commentsdiv${c.comments_no}" style="height: 60px; padding: 5px; padding-left: 10px;">
-											${c.comments_content }
-											<div id="cocommentsdiv${c.comments_no }"></div>
 										</div>
+										<div id="commentsdiv${c.comments_no}" style="word-break: break-all; height: 60px; width: 100%; padding: 5px; padding-left: 10px;">
+											${c.comments_content }
+										</div>
+										<div id="cocommentsdiv${c.comments_no }" style="width: 100%; height: 60px;"></div>
+										
 										<br>
 										</c:if>
 										<c:forEach items="${comments }" var="co">
 												<c:if test="${co.comments_comments_no eq c.comments_no }">
 												<div style="width: 100%;">
-													<div style="width: 8%; float: left; height:110px; text-align:right;">┗</div>
+													<div style="width: 8%; float: left; height:30px;text-align:right;">┗</div>
 													<div style="width: 92%; float: left; background: #dddfe6; height: 30px; padding: 5px; padding-left: 10px; border-radius: 10px;">
 													<b>${co.member_nick } 님&ensp;</b>
 													<div style="color: #FAFAFA; float: right; margin-right: 5px;">${c.comments_date }</div> 
@@ -244,7 +246,7 @@ function good(member_no, board_no, board_type){
 															<img src="./img/close.png" style="width: 15px; height: 15px; padding:0; margin-bottom: 2px;">삭제</button>
 														</c:if>
 												 </div>
-												<div id="commentsdiv${co.comments_no}" style="height: 110px; padding: 0; padding-left: 100px;">
+												<div id="commentsdiv${co.comments_no}" style="word-break: break-all; height: 150px; padding: 0; padding-left: 110px;">
 													${co.comments_content }
 												</div>
 												</div><br>

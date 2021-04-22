@@ -47,12 +47,17 @@
 	
 	<update id="editBoard" parameterType="Map">
 		UPDATE board SET board_title=#{board_title}, board_content=#{board_content}
+		, secret = #{secret}
+		<if test="board_file != null">, board_file= #{board_file}, 
+		board_file_origin = #{board_file_origin}</if>
 		WHERE board_no = ${board_no}
 	</update>
 	<insert id="writeBoard" parameterType="Map">
 		insert into board (board_type_no, board_title, board_content, member_no
+		, secret
 		<if test="board_file != null">, board_file, board_file_origin</if>)
 		values(#{board_type_no}, #{board_title}, #{board_content}, #{member_no}
+		, #{secret}
 		<if test="board_file != null">, #{board_file}, #{board_file_origin}</if>)
 	</insert>
 	

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -84,7 +85,7 @@ public class BoardController {
 		return mv;
 	}
 	
-	@GetMapping(value="/boardDetail")
+	@RequestMapping(value="/boardDetail")
 	public ModelAndView boardDetail(@RequestParam HashMap<String, Object> map, HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("boardDetail");
 		ArrayList<HashMap<String, Object>> comments = boardService.comments(map);
@@ -96,19 +97,20 @@ public class BoardController {
 				mv.setViewName("redirect:/board?key="+map.get("key"));
 			}else if (map.get("act").equals("write")) {
 				mv = new ModelAndView("write");
+				detail.put("secret", map.get("secret"));
+				detail.put("key", map.get("key"));
 				mv.addObject("map", detail);
-
 				return mv;
 			}
 		} else {
-			mv.addObject("detail", detail);
-			mv.addObject("comments", comments);
-			HttpSession session = request.getSession();
-			if (session.getAttribute("member_no") != null) {
-				map.put("member_no", session.getAttribute("member_no"));
-				int goodcheck = boardService.goodcheck(map);
-				mv.addObject("goodcheck", goodcheck);				
-			}
+				mv.addObject("detail", detail);
+				mv.addObject("comments", comments);
+				HttpSession session = request.getSession();
+				if (session.getAttribute("member_no") != null) {
+					map.put("member_no", session.getAttribute("member_no"));
+					int goodcheck = boardService.goodcheck(map);
+					mv.addObject("goodcheck", goodcheck);		
+				}
 		}
 		
 		return mv;			
@@ -137,6 +139,13 @@ public class BoardController {
 	
 	@PostMapping(value="/writeA")
 	public String writeA(@RequestParam HashMap<String, Object> map, HttpServletRequest request, MultipartFile file) {
+		//System.out.println(map.get("secret")); //on, null
+		if (!map.containsKey("secret")) {
+			map.put("secret", 'N');
+		}else {
+			map.put("secret", 'Y');
+		}
+		
 		if (map.containsKey("board_no")) {
 			boardService.editA(map);			
 			
@@ -145,7 +154,6 @@ public class BoardController {
 		}else {
 			HttpSession session = request.getSession();
 			map.put("member_no", session.getAttribute("member_no"));
-			System.out.println(map.get("key"));
 			if (map.get("key").equals("free")) {
 				map.put("board_type_no", 1);
 			}else if (map.get("key").equals("qna")) {
